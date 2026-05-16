@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>SENTINEL · ESP32 Robot Guardian</title>
+<meta name="description" content="Real-time ESP32 robot sentinel dashboard — radar sweep, sensor monitoring, gate and scan control."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="sentinel.css"/>
+</head>
+<body>
+
+<!-- SETTINGS MODAL -->
+<div id="settingsModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title">⚙ SYSTEM CONFIG</span>
+      <button class="modal-close" id="cancelSettings">✕</button>
+    </div>
+    <label class="field-label">ESP32 BASE URL</label>
+    <div style="display:flex;gap:.5rem">
+      <input id="espUrl" class="field-input" type="text" placeholder="10.186.88.213 or http://10.186.88.213" spellcheck="false" style="flex:1"/>
+      <button id="testBtn" class="btn btn-ghost btn-sm" onclick="testConnection()" style="white-space:nowrap">⚡ TEST</button>
+    </div>
+    <div id="testResult" style="font-size:.65rem;color:var(--text2);min-height:1.2em;white-space:pre-wrap;line-height:1.5"></div>
+    <div style="background:rgba(255,107,53,.08);border:1px solid rgba(255,107,53,.25);border-radius:var(--r);padding:.6rem .75rem;font-size:.65rem;color:var(--orange);line-height:1.6">
+      ⚠ <strong>CORS required:</strong> Your ESP32 must send this header on every response:<br/>
+      <code style="color:var(--cyan)">server.sendHeader("Access-Control-Allow-Origin", "*");</code>
+    </div>
+    <p class="field-hint">You can type just the IP — <code>http://</code> is added automatically.</p>
+    <button id="saveSettings" class="btn btn-cyan btn-full">SAVE &amp; CONNECT</button>
+  </div>
+</div>
+
+<!-- INTRUSION ALERT POPUP -->
+<div id="intrusionAlert" class="hidden">
+  <div class="ia-box">
+    <div class="ia-scanline"></div>
+    <div class="ia-corner tl"></div><div class="ia-corner tr"></div>
+    <div class="ia-corner bl"></div><div class="ia-corner br"></div>
+    <div class="ia-icon" id="iaIcon">⚠</div>
+    <div class="ia-title" id="iaTitle">INTRUSION DETECTED</div>
+    <div class="ia-subtitle" id="iaSubtitle">THREAT IDENTIFIED — SENTINEL ALERT</div>
+    <div class="ia-type-chips" id="iaChips"></div>
+    <div class="ia-details">
+      <div class="ia-detail">
+        <span class="ia-detail-label">ANGLE</span>
+        <span class="ia-detail-val" id="iaAngle">---°</span>
+      </div>
+      <div class="ia-detail">
+        <span class="ia-detail-label">DISTANCE</span>
+        <span class="ia-detail-val" id="iaDist">-- cm</span>
+      </div>
+      <div class="ia-detail">
+        <span class="ia-detail-label">TIME</span>
+        <span class="ia-detail-val" id="iaTime" style="font-size:.85rem">--:--:--</span>
+      </div>
+    </div>
+    <button class="ia-dismiss" onclick="dismissAlert()">✓ ACKNOWLEDGE</button>
+    <button class="ia-snooze"  onclick="snoozeAlert()">⏱ SNOOZE 30s</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-brand">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><polygon points="10,1 19,7 19,14 10,19 1,14 1,7" stroke="#00cfff" stroke-width="1.5" fill="none"/><circle cx="10" cy="10" r="3" fill="#00cfff"/></svg>
+    <span class="logo">SENTINEL</span>
+    <span class="logo-sub">ESP32 GUARDIAN</span>
+  </div>
+  <div class="hdr-center">
+    <div id="connBadge" class="conn-badge offline">
+      <span class="conn-dot"></span>
+      <span id="connLabel">OFFLINE</span>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <span id="clock" class="clock"></span>
+    <button id="demoToggle" class="btn btn-demo active" onclick="toggleDemo()">◉ DEMO</button>
+    <button id="openSettings" class="btn btn-ghost btn-sm" onclick="openConfig()">⚙</button>
+  </div>
+</header>
+
+<!-- STATUS BAR -->
+<div class="statusbar">
+  <span class="sb-item"><span class="sb-key">MODE</span><span id="sbMode" class="sb-val cyan">DEMO</span></span>
+  <span class="sb-sep">·</span>
+  <span class="sb-item"><span class="sb-key">POLL</span><span class="sb-val">300ms</span></span>
+  <span class="sb-sep">·</span>
+  <span class="sb-item"><span class="sb-key">ANGLE</span><span id="sbAngle" class="sb-val cyan">090°</span></span>
+  <span class="sb-sep">·</span>
+  <span class="sb-item"><span class="sb-key">DIST</span><span id="sbDist" class="sb-val">-- cm</span></span>
+  <span class="sb-sep">·</span>
+  <span class="sb-item"><span class="sb-key">SCAN</span><span id="sbScan" class="sb-val green">ACTIVE</span></span>
+</div>
+
+<!-- MAIN GRID -->
+<main class="grid">
+
+  <!-- RADAR -->
+  <div class="card card-radar">
+    <div class="card-hd">
+      <span class="card-title">◈ RADAR SWEEP</span>
+      <span id="radarAngle" class="radar-angle-hd">090°</span>
+    </div>
+    <div class="radar-wrap">
+      <canvas id="radarCanvas"></canvas>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-panel">
+    <div class="stat" id="stDist">
+      <div class="stat-label">DISTANCE</div>
+      <div class="stat-value" id="vDist">--</div>
+      <div class="stat-unit">cm</div>
+    </div>
+    <div class="stat" id="stAngle">
+      <div class="stat-label">ANGLE</div>
+      <div class="stat-value" id="vAngle">--</div>
+      <div class="stat-unit">deg</div>
+    </div>
+    <div class="stat" id="stGate">
+      <div class="stat-label">GATE</div>
+      <div class="stat-value sm" id="vGate">--</div>
+      <div class="stat-unit"></div>
+    </div>
+    <div class="stat" id="stTouch">
+      <div class="stat-label">TOUCH</div>
+      <div class="stat-value sm" id="vTouch">--</div>
+      <div class="stat-unit"></div>
+    </div>
+    <div class="stat" id="stBuzz">
+      <div class="stat-label">BUZZER</div>
+      <div class="stat-value sm" id="vBuzz">--</div>
+      <div class="stat-unit"></div>
+    </div>
+    <div class="stat" id="stLand">
+      <div class="stat-label">LAND</div>
+      <div class="stat-value sm" id="vLand">--</div>
+      <div class="stat-unit"></div>
+    </div>
+    <div class="stat" id="stWater">
+      <div class="stat-label">WATER</div>
+      <div class="stat-value sm" id="vWater">--</div>
+      <div class="stat-unit"></div>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="card card-ctrl" id="ctrlPanel">
+
+    <!-- GATE -->
+    <div class="ctrl-section">
+      <div class="ctrl-title">▣ GATE</div>
+      <div class="seg-row">
+        <button id="mManual" class="seg active" onclick="setGateMode('manual')">MANUAL</button>
+        <button id="mPhys"   class="seg"        onclick="setGateMode('physical')">PHYSICAL</button>
+      </div>
+      <div class="btn-pair">
+        <button id="btnOpen"  class="btn btn-cyan btn-half"   onclick="setGate('open')">▶ OPEN</button>
+        <button id="btnClose" class="btn btn-orange btn-half" onclick="setGate('close')">◀ CLOSE</button>
+      </div>
+      <div class="status-row">
+        <span class="s-key">STATE</span>
+        <span id="gateStatBadge" class="badge badge-gray">UNKNOWN</span>
+      </div>
+    </div>
+
+    <div class="ctrl-divider"></div>
+
+    <!-- THRESHOLD -->
+    <div class="ctrl-section">
+      <div class="ctrl-title">◎ DISTANCE THRESHOLD</div>
+      <div class="slider-field">
+        <div class="slider-header"><span>MIN</span><span id="lDistMin" class="sv">10</span><span class="su">cm</span></div>
+        <input id="slDistMin" class="slider" type="range" min="1" max="100" value="10" oninput="sv('slDistMin','lDistMin')"/>
+      </div>
+      <div class="slider-field">
+        <div class="slider-header"><span>MAX</span><span id="lDistMax" class="sv">20</span><span class="su">cm</span></div>
+        <input id="slDistMax" class="slider" type="range" min="1" max="200" value="20" oninput="sv('slDistMax','lDistMax')"/>
+      </div>
+      <div class="apply-row">
+        <button class="btn btn-apply" onclick="applyThreshold()">APPLY</button>
+        <span id="fbThresh" class="fb"></span>
+      </div>
+    </div>
+
+    <div class="ctrl-divider"></div>
+
+    <!-- TOUCH -->
+    <div class="ctrl-section">
+      <div class="ctrl-title">⚡ TOUCH SENSITIVITY</div>
+      <div class="slider-field">
+        <div class="slider-header"><span>THRESHOLD</span><span id="lTouchTh" class="sv">40</span><small class="hint">↓ more sensitive</small></div>
+        <input id="slTouchTh" class="slider" type="range" min="5" max="90" value="40" oninput="sv('slTouchTh','lTouchTh')"/>
+      </div>
+      <div class="apply-row">
+        <button class="btn btn-apply" onclick="applyTouch()">APPLY</button>
+        <span id="fbTouch" class="fb"></span>
+      </div>
+    </div>
+
+    <div class="ctrl-divider"></div>
+
+    <!-- SCAN -->
+    <div class="ctrl-section">
+      <div class="ctrl-title">⟳ SERVO SCAN</div>
+      <div class="two-col">
+        <div class="slider-field">
+          <div class="slider-header"><span>SPEED</span><span id="lSpeed" class="sv">40</span><span class="su">ms</span></div>
+          <input id="slSpeed" class="slider" type="range" min="10" max="200" value="40" oninput="sv('slSpeed','lSpeed')"/>
+        </div>
+        <div class="slider-field">
+          <div class="slider-header"><span>STEP</span><span id="lStep" class="sv">2</span><span class="su">°</span></div>
+          <input id="slStep" class="slider" type="range" min="1" max="10" value="2" oninput="sv('slStep','lStep')"/>
+        </div>
+        <div class="slider-field">
+          <div class="slider-header"><span>SW MIN</span><span id="lSwMin" class="sv">0</span><span class="su">°</span></div>
+          <input id="slSwMin" class="slider" type="range" min="0" max="170" value="0" oninput="sv('slSwMin','lSwMin')"/>
+        </div>
+        <div class="slider-field">
+          <div class="slider-header"><span>SW MAX</span><span id="lSwMax" class="sv">180</span><span class="su">°</span></div>
+          <input id="slSwMax" class="slider" type="range" min="10" max="180" value="180" oninput="sv('slSwMax','lSwMax')"/>
+        </div>
+      </div>
+      <div class="apply-row">
+        <button class="btn btn-apply" onclick="applyScan()">APPLY</button>
+        <button id="btnScanTgl" class="btn btn-ghost btn-sm" onclick="toggleScan()">⏸ PAUSE</button>
+        <span id="fbScan" class="fb"></span>
+      </div>
+    </div>
+
+    <div class="ctrl-divider"></div>
+
+    <!-- BUZZER -->
+    <div class="ctrl-section">
+      <div class="ctrl-title">♪ BUZZER</div>
+      <div class="apply-row">
+        <button id="btnBuzz" class="btn btn-cyan btn-half" onclick="toggleBuzzer()">🔊 ENABLE</button>
+        <span id="fbBuzz" class="fb"></span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- EVENT LOG -->
+  <div class="card card-log">
+    <div class="card-hd">
+      <span class="card-title">◈ EVENT LOG</span>
+      <button class="btn btn-ghost btn-xs" onclick="document.getElementById('log').innerHTML=''">CLEAR</button>
+    </div>
+    <div id="log" class="log"></div>
+  </div>
+
+</main>
+
+<!-- MOBILE CONTROLS TOGGLE -->
+<button class="fab" onclick="document.getElementById('ctrlPanel').classList.toggle('mob-open')">⚙ CONTROLS</button>
+
+<script src="sentinel.js"></script>
+</body>
+</html>

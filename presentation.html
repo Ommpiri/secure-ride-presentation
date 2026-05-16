@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>IoT-Enabled Multi-Domain Intrusion Detection System · LPU 2025</title>
+<meta name="description" content="IEEE Conference presentation on IoT-Enabled Multi-Domain Intrusion Detection System by Team LPU 2025"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:#fff;color:#111827}
+/* NAV */
+#top-bar{position:fixed;top:0;left:0;right:0;height:48px;background:#fff;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:100}
+#top-bar .logo{font-size:13px;color:#6b7280;font-weight:500}
+#progress-wrap{position:absolute;left:50%;transform:translateX(-50%);width:240px;height:3px;background:#e2e8f0;border-radius:99px;overflow:hidden}
+#progress-bar{height:100%;background:#2563eb;border-radius:99px;transition:width 350ms ease}
+#slide-counter{font-size:13px;color:#6b7280;font-weight:500}
+#bottom-bar{position:fixed;bottom:0;left:0;right:0;height:52px;background:#fff;border-top:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;gap:16px;z-index:100}
+.nav-btn{background:none;border:1.5px solid #e2e8f0;color:#374151;font-family:'Inter',sans-serif;font-size:14px;font-weight:500;padding:6px 18px;border-radius:8px;cursor:pointer;transition:all 150ms}
+.nav-btn:hover{background:#f1f5f9;border-color:#2563eb;color:#2563eb}
+#dots{display:flex;gap:7px;align-items:center}
+.dot{width:9px;height:9px;border-radius:50%;border:2px solid #9ca3af;background:transparent;cursor:pointer;transition:all 200ms;padding:0}
+.dot.active{background:#2563eb;border-color:#2563eb}
+/* SLIDE WRAPPER */
+#slides-container{position:fixed;top:48px;bottom:52px;left:0;right:0;overflow:hidden}
+.slide{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding:36px 24px;opacity:0;transform:translateY(10px);transition:opacity 350ms ease-in-out,transform 350ms ease-in-out;pointer-events:none}
+.slide.active{opacity:1;transform:translateY(0);pointer-events:auto}
+.slide-content{width:100%;max-width:880px}
+/* SHARED */
+.slide-heading{font-size:26px;font-weight:700;color:#0f172a;margin-bottom:4px}
+.slide-sub{font-size:14px;color:#6b7280;margin-bottom:24px}
+.divider{border:none;border-top:1px solid #e2e8f0;margin:20px 0}
+/* SLIDE 1 */
+.s1-center{text-align:center}
+.s1-pill{display:inline-block;background:#eff6ff;color:#2563eb;font-size:12px;font-weight:600;padding:5px 16px;border-radius:99px;margin-bottom:20px}
+.s1-title{font-size:40px;font-weight:800;color:#0f172a;line-height:1.2;margin-bottom:12px}
+.s1-subtitle{font-size:18px;color:#2563eb;font-weight:500;margin-bottom:20px}
+.s1-team-label{font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.s1-cards{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.s1-card{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px 16px;flex:1;min-width:160px;max-width:200px;text-align:center}
+.s1-card.highlight{border-color:#2563eb}
+.s1-num{width:28px;height:28px;background:#2563eb;color:#fff;border-radius:50%;font-size:13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;margin-bottom:8px}
+.s1-name{font-size:13px;font-weight:700;color:#111827}
+.s1-role{font-size:11px;color:#6b7280;margin-top:2px}
+.s1-uni{font-size:12px;color:#6b7280;margin-bottom:16px}
+.s1-pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.s1-tag{background:#eff6ff;color:#2563eb;font-size:12px;font-weight:600;padding:6px 16px;border-radius:99px}
+/* SLIDE 2 */
+.lit-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px}
+.lit-table th{background:#2563eb;color:#fff;font-weight:600;padding:9px 10px;text-align:left}
+.lit-table td{padding:8px 10px;vertical-align:top;color:#111827}
+.lit-table tr:nth-child(even) td{background:#f8fafc}
+.lit-table tr:nth-child(odd) td{background:#fff}
+.lit-note{font-size:12px;color:#6b7280;font-style:italic}
+/* SLIDE 3 */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.gap-col h3{font-size:15px;font-weight:700;margin-bottom:16px}
+.gap-col h3.red{color:#dc2626}
+.gap-col h3.green{color:#16a34a}
+.gap-rows{display:flex;flex-direction:column;gap:12px}
+.gap-row{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:#374151;line-height:1.5}
+.icon-circle{width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.icon-red{background:#fee2e2;color:#dc2626}
+.icon-green{background:#dcfce7;color:#16a34a}
+/* SLIDE 4 */
+.blockquote-box{background:#eff6ff;border-left:4px solid #2563eb;border-radius:6px;padding:16px 20px;font-size:15px;color:#1e40af;line-height:1.6;margin-bottom:24px}
+.obj-label{font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px}
+.obj-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.obj-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;font-size:13.5px;color:#374151;line-height:1.5;border-bottom:1px solid #f1f5f9}
+.obj-num{width:22px;height:22px;background:#2563eb;color:#fff;border-radius:50%;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+/* SLIDE 5 */
+.hw-grid{display:grid;grid-template-columns:55% 45%;gap:28px}
+.hw-rows{display:flex;flex-direction:column}
+.hw-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid #f1f5f9}
+.hw-info{flex:1}
+.hw-name{font-size:14px;font-weight:700;color:#111827}
+.hw-desc{font-size:13px;color:#6b7280;margin-top:2px}
+.hw-gpio{font-size:11px;font-family:monospace;background:#eff6ff;color:#2563eb;padding:2px 8px;border-radius:4px;margin-top:4px;display:inline-block}
+.hw-img{background:#f1f5f9;border-radius:10px;aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px}
+.hw-img-label{font-size:13px;color:#9ca3af;font-style:italic}
+.hw-img-cap{font-size:11px;color:#9ca3af;margin-top:8px}
+.hw-cost{background:#dcfce7;color:#15803d;font-size:13px;font-weight:600;text-align:center;padding:12px;border-radius:8px;margin-top:20px}
+/* SLIDE 6 */
+.arch-cols{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:0;align-items:start;margin-bottom:28px}
+.arch-arrow{font-size:22px;color:#2563eb;display:flex;align-items:center;padding-top:36px}
+.arch-card{border:1px solid #e2e8f0;border-radius:10px;overflow:hidden}
+.arch-card-head{padding:10px 16px;font-size:14px;font-weight:700;color:#fff}
+.arch-card-body{padding:14px 16px}
+.arch-card-body ul{list-style:none;font-size:13px;color:#374151;line-height:2}
+.arch-blue .arch-card-head{background:#2563eb}
+.arch-navy .arch-card-head{background:#1e3a5f}
+.arch-green .arch-card-head{background:#16a34a}
+.fsm-label{font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+.fsm-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.fsm-box{background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:10px 20px;font-size:14px;font-weight:700;color:#0f172a}
+.fsm-arrow{color:#2563eb;font-size:18px;font-weight:700}
+@media(max-width:640px){
+  .two-col,.obj-grid,.hw-grid,.arch-cols{grid-template-columns:1fr}
+  .arch-arrow{display:none}
+  .s1-title{font-size:28px}
+  .slide-heading{font-size:20px}
+}
+/* ===== INTERACTIVE STYLES ===== */
+/* Slide 2 expandable rows */
+.lit-table tbody tr{cursor:pointer;transition:background 150ms}
+.lit-table tbody tr:hover td{background:#eff6ff!important}
+.lit-table tbody tr.expanded td{border-left:3px solid #2563eb}
+.lit-detail{display:none;background:#f0f7ff;padding:10px 14px;font-size:12px;color:#1e40af;line-height:1.6}
+.lit-detail.open{display:table-row}
+.lit-detail td{border-left:3px solid #2563eb;padding:10px 14px}
+.lit-domain-tag{display:inline-block;background:#dbeafe;color:#1d4ed8;font-size:11px;font-weight:600;padding:2px 10px;border-radius:99px;margin-top:6px}
+/* Slide 3 toggle */
+#s3-toggle-btn{display:inline-block;background:#2563eb;color:#fff;font-size:13px;font-weight:600;padding:7px 20px;border-radius:99px;border:none;cursor:pointer;margin-bottom:20px;font-family:'Inter',sans-serif;transition:background 200ms}
+#s3-toggle-btn:hover{background:#1d4ed8}
+.gap-col{transition:opacity 400ms,transform 400ms}
+.gap-col.hidden{opacity:0;transform:translateX(40px);pointer-events:none;position:absolute}
+.s3-wrap{position:relative;overflow:hidden;min-height:260px}
+/* Slide 4 objective check */
+.obj-item{cursor:pointer;transition:background 150ms;border-radius:6px;padding-left:4px}
+.obj-item:hover{background:#f8fafc}
+.obj-item.checked .obj-num{background:#0f172a}
+.obj-item.checked span:last-child{color:#0f172a;font-weight:700}
+.obj-check{margin-left:auto;color:#16a34a;font-weight:700;font-size:14px;opacity:0;transition:opacity 200ms}
+.obj-item.checked .obj-check{opacity:1}
+/* Slide 5 popup */
+.hw-row{position:relative;cursor:pointer}
+.hw-row:hover{background:#f8fafc;border-radius:6px}
+.hw-popup{display:none;position:absolute;top:0;left:105%;z-index:200;width:260px;background:#fff;border:1.5px solid #2563eb;border-radius:10px;padding:14px;box-shadow:0 8px 24px rgba(37,99,235,.15);font-size:13px}
+.hw-popup.open{display:block}
+.hw-popup-close{position:absolute;top:8px;right:10px;background:none;border:none;font-size:16px;cursor:pointer;color:#6b7280}
+.hw-popup h4{font-size:13px;font-weight:700;color:#0f172a;margin-bottom:6px}
+.hw-popup p{color:#374151;line-height:1.6;margin-bottom:4px}
+.hw-popup .hw-gpio{margin-top:4px}
+@media(max-width:640px){.hw-popup{left:0;top:100%;width:100%}}
+/* Slide 6 FSM */
+.fsm-box{opacity:0;transform:translateY(8px);transition:opacity 300ms,transform 300ms,box-shadow 300ms,border-color 300ms}
+.fsm-box.visible{opacity:1;transform:translateY(0)}
+.fsm-box.glow-blue{box-shadow:0 0 0 3px #93c5fd;border-color:#2563eb;background:#eff6ff}
+.fsm-box.glow-red{box-shadow:0 0 0 3px #fca5a5;border-color:#dc2626;background:#fff1f2;color:#dc2626}
+#fsm-sim-btn{margin-top:14px;background:#2563eb;color:#fff;border:none;border-radius:8px;padding:8px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background 200ms}
+#fsm-sim-btn:hover{background:#1d4ed8}
+#fsm-sim-btn:disabled{opacity:.5;cursor:not-allowed}
+.fsm-arrow{opacity:0;transition:opacity 300ms}
+.fsm-arrow.visible{opacity:1}
+/* Slide 7 editable cards */
+.s7-card{border:1.5px solid #e2e8f0;border-radius:10px;padding:20px;position:relative}
+.s7-pencil{position:absolute;top:10px;right:12px;font-size:14px;color:#9ca3af;cursor:pointer}
+.s7-placeholder{background:#f8fafc;border-radius:6px;padding:20px;min-height:80px;font-size:13px;color:#9ca3af;font-style:italic;cursor:text;display:flex;align-items:center;justify-content:center;transition:background 150ms}
+.s7-placeholder:hover{background:#f0f7ff}
+.s7-textarea{width:100%;min-height:80px;border:1.5px solid #2563eb;border-radius:6px;padding:10px;font-size:13px;font-family:'Inter',sans-serif;resize:vertical;outline:none;color:#111827;display:none}
+.s7-saved{background:#f8fafc;border-radius:6px;padding:10px 14px;font-size:13px;color:#111827;min-height:80px;line-height:1.6;display:none;white-space:pre-wrap}
+/* Slide 8 counters */
+.stat-num{transition:none}
+.result-row{opacity:0;transform:translateY(6px);transition:opacity 300ms,transform 300ms}
+.result-row.visible{opacity:1;transform:translateY(0)}
+/* Slide 9 comparison bars */
+.compare-section{margin-top:24px;padding-top:16px;border-top:1px solid #e2e8f0}
+.compare-label{font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+.bar-row{margin-bottom:12px}
+.bar-title{font-size:13px;color:#374151;margin-bottom:5px;font-weight:500}
+.bar-track{background:#f1f5f9;border-radius:99px;height:10px;overflow:hidden}
+.bar-fill{height:100%;border-radius:99px;width:0%;transition:width 1.2s ease;display:flex;align-items:center}
+.bar-fill-red{background:#dc2626}
+.bar-fill-green{background:#16a34a}
+.bar-tag{font-size:11px;font-weight:600;margin-left:8px;color:#fff;white-space:nowrap;padding:0 6px}
+/* Slide 10/11 lightbox */
+#lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:999;align-items:center;justify-content:center;flex-direction:column}
+#lightbox.open{display:flex}
+#lightbox-inner{background:#f1f5f9;border-radius:12px;width:min(600px,90vw);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;position:relative}
+#lightbox-label{color:#fff;font-size:13px;margin-top:14px;font-weight:500}
+#lightbox-close{position:absolute;top:-16px;right:-16px;width:32px;height:32px;background:#fff;border-radius:50%;border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.lb-nav{background:rgba(255,255,255,.15);border:none;color:#fff;font-size:24px;padding:12px 18px;border-radius:8px;cursor:pointer;position:absolute;top:50%;transform:translateY(-50%)}
+#lb-prev{left:-60px}#lb-next{right:-60px}
+/* Slide 12 particles */
+#particle-canvas{position:absolute;inset:0;pointer-events:none;border-radius:16px}
+/* Keyboard hint */
+#kbd-hint{position:fixed;bottom:64px;left:50%;transform:translateX(-50%);background:rgba(15,23,42,.85);color:#fff;font-size:12px;padding:8px 18px;border-radius:99px;z-index:500;pointer-events:none;transition:opacity 600ms;white-space:nowrap}
+#kbd-hint.fade{opacity:0}
+/* Overview modal */
+#overview{display:none;position:fixed;inset:0;background:rgba(255,255,255,.97);z-index:600;overflow-y:auto;padding:60px 24px}
+#overview.open{display:block}
+#overview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px;max-width:900px;margin:0 auto}
+.ov-card{border:1.5px solid #e2e8f0;border-radius:10px;padding:16px;cursor:pointer;transition:border-color 200ms,box-shadow 200ms;text-align:center}
+.ov-card:hover{border-color:#2563eb;box-shadow:0 4px 12px rgba(37,99,235,.15)}
+.ov-num{font-size:11px;color:#6b7280;margin-bottom:4px;font-weight:500}
+.ov-title{font-size:13px;font-weight:700;color:#0f172a}
+#overview-close{position:fixed;top:16px;right:20px;background:none;border:1.5px solid #e2e8f0;border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif}
+#overview h2{text-align:center;margin-bottom:24px;font-size:18px;color:#0f172a}
+/* ===== SETUP SCREEN ===== */
+#setup-screen{position:fixed;inset:0;background:#fff;z-index:2000;display:flex;flex-direction:column;overflow-y:auto}
+#setup-screen.hidden{display:none}
+#setup-header{background:#fff;border-bottom:1px solid #e2e8f0;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+#setup-header h1{font-size:18px;font-weight:700;color:#0f172a}
+#setup-header p{font-size:13px;color:#6b7280;margin-top:2px}
+#setup-body{flex:1;padding:32px;max-width:960px;margin:0 auto;width:100%}
+#setup-body h2{font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px}
+#setup-body p.setup-hint{font-size:13px;color:#6b7280;margin-bottom:24px}
+#setup-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+.setup-slot{border:1.5px dashed #e2e8f0;border-radius:10px;overflow:hidden;cursor:pointer;transition:border-color 200ms,box-shadow 200ms;position:relative}
+.setup-slot:hover{border-color:#2563eb;box-shadow:0 4px 12px rgba(37,99,235,.1)}
+.setup-slot.has-image{border-style:solid;border-color:#2563eb}
+.setup-slot-inner{aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;background:#f8fafc;transition:background 200ms}
+.setup-slot.has-image .setup-slot-inner{background:#fff;padding:0}
+.setup-slot-inner img{width:100%;height:100%;object-fit:cover;display:block}
+.setup-slot-icon{font-size:22px;color:#9ca3af;margin-bottom:6px}
+.setup-slot-label{font-size:11px;font-weight:600;color:#374151;text-align:center;padding:8px 8px 10px;border-top:1px solid #e2e8f0;background:#fff}
+.setup-slot input[type=file]{display:none}
+.setup-slot-badge{position:absolute;top:6px;right:6px;background:#2563eb;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px}
+#setup-footer{border-top:1px solid #e2e8f0;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;background:#fff;flex-shrink:0}
+#setup-footer p{font-size:13px;color:#6b7280}
+#start-btn{background:#2563eb;color:#fff;border:none;border-radius:10px;padding:12px 32px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:8px;transition:background 200ms,transform 150ms}
+#start-btn:hover{background:#1d4ed8;transform:translateY(-1px)}
+#start-btn .play-icon{font-size:18px}
+#setup-skip{font-size:13px;color:#6b7280;background:none;border:1.5px solid #e2e8f0;border-radius:8px;padding:10px 20px;cursor:pointer;font-family:'Inter',sans-serif;transition:border-color 200ms}
+#setup-skip:hover{border-color:#2563eb;color:#2563eb}
+@media(max-width:640px){#setup-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<!-- SETUP SCREEN -->
+<div id="setup-screen">
+  <div id="setup-header">
+    <div>
+      <h1>IoT-IDS Presentation Setup</h1>
+      <p>Upload your prototype photos before starting — you can skip and add them later too</p>
+    </div>
+    <div style="font-size:12px;background:#eff6ff;color:#2563eb;padding:6px 14px;border-radius:99px;font-weight:600">IEEE Conference · CSE · LPU 2025</div>
+  </div>
+  <div id="setup-body">
+    <h2>Upload Project Images</h2>
+    <p class="setup-hint">Click any slot to upload a photo. Images appear in Slides 10 &amp; 11 during the presentation.</p>
+    <div id="setup-grid">
+      <div class="setup-slot" id="slot-0" onclick="triggerUpload(0)">
+        <input type="file" id="file-0" accept="image/*" onchange="handleUpload(0,this)">
+        <div class="setup-slot-inner"><div class="setup-slot-icon">📷</div><div style="font-size:11px;color:#9ca3af;text-align:center">Click to upload</div></div>
+        <div class="setup-slot-label">Prototype Overview</div>
+      </div>
+      <div class="setup-slot" id="slot-1" onclick="triggerUpload(1)">
+        <input type="file" id="file-1" accept="image/*" onchange="handleUpload(1,this)">
+        <div class="setup-slot-inner"><div class="setup-slot-icon">📷</div><div style="font-size:11px;color:#9ca3af;text-align:center">Click to upload</div></div>
+        <div class="setup-slot-label">ESP32 + Wiring</div>
+      </div>
+      <div class="setup-slot" id="slot-2" onclick="triggerUpload(2)">
+        <input type="file" id="file-2" accept="image/*" onchange="handleUpload(2,this)">
+        <div class="setup-slot-inner"><div class="setup-slot-icon">📷</div><div style="font-size:11px;color:#9ca3af;text-align:center">Click to upload</div></div>
+        <div class="setup-slot-label">Servo + HC-SR04 Mount</div>
+      </div>
+      <div class="setup-slot" id="slot-3" onclick="triggerUpload(3)">
+        <input type="file" id="file-3" accept="image/*" onchange="handleUpload(3,this)">
+        <div class="setup-slot-inner"><div class="setup-slot-icon">📷</div><div style="font-size:11px;color:#9ca3af;text-align:center">Click to upload</div></div>
+        <div class="setup-slot-label">WebSocket Dashboard</div>
+      </div>
+      <div class="setup-slot" id="slot-4" onclick="triggerUpload(4)">
+        <input type="file" id="file-4" accept="image/*" onchange="handleUpload(4,this)">
+        <div class="setup-slot-inner"><div class="setup-slot-icon">📷</div><div style="font-size:11px;color:#9ca3af;text-align:center">Click to upload</div></div>
+        <div class="setup-slot-label">TTP223 Touch Sensor</div>
+      </div>
+      <div class="setup-slot" id="slot-5" onclick="triggerUpload(5)">
+        <input type="file" id="file-5" accept="image/*" onchange="handleUpload(5,this)">
+        <div class="setup-slot-inner"><div class="setup-slot-icon">📷</div><div style="font-size:11px;color:#9ca3af;text-align:center">Click to upload</div></div>
+        <div class="setup-slot-label">Piezo Buzzer Output</div>
+      </div>
+      <div class="setup-slot" id="slot-6" onclick="triggerUpload(6)">
+        <input type="file" id="file-6" accept="image/*" onchange="handleUpload(6,this)">
+        <div class="setup-slot-inner"><div class="setup-slot-icon">📷</div><div style="font-size:11px;color:#9ca3af;text-align:center">Click to upload</div></div>
+        <div class="setup-slot-label">Breadboard Full View</div>
+      </div>
+      <div class="setup-slot" id="slot-7" onclick="triggerUpload(7)">
+        <input type="file" id="file-7" accept="image/*" onchange="handleUpload(7,this)">
+        <div class="setup-slot-inner"><div class="setup-slot-icon">📷</div><div style="font-size:11px;color:#9ca3af;text-align:center">Click to upload</div></div>
+        <div class="setup-slot-label">Detection Test Result</div>
+      </div>
+    </div>
+  </div>
+  <div id="setup-footer">
+    <button id="setup-skip" onclick="startPresentation()">Skip &amp; Start Later</button>
+    <button id="start-btn" onclick="startPresentation()"><span class="play-icon">▶</span> Start Presentation</button>
+  </div>
+</div>
+
+<!-- TOP BAR -->
+<div id="top-bar">
+  <span class="logo">IoT-IDS · LPU</span>
+  <div id="progress-wrap"><div id="progress-bar" style="width:8.33%"></div></div>
+  <span id="slide-counter">01 / 12</span>
+</div>
+
+<!-- SLIDES -->
+<div id="slides-container">
+
+<!-- SLIDE 1: TITLE -->
+<div class="slide active" id="slide-1">
+<div class="slide-content s1-center">
+  <div class="s1-pill">IEEE Conference · CSE · LPU 2025</div>
+  <h1 class="s1-title">IoT-Enabled<br/>Multi-Domain<br/>Intrusion Detection System</h1>
+  <p class="s1-subtitle">ESP32 · WebSocket Dashboard · Real-Time Surveillance</p>
+  <hr class="divider"/>
+  <p class="s1-team-label">Team Members</p>
+  <div class="s1-cards">
+    <div class="s1-card highlight">
+      <div class="s1-num">1</div>
+      <div class="s1-name">Omm Atrayu Piri</div>
+      <div class="s1-role">Hardware &amp; Firmware Lead</div>
+    </div>
+    <div class="s1-card">
+      <div class="s1-num">2</div>
+      <div class="s1-name">Gauri Priya</div>
+      <div class="s1-role">IoT Dashboard &amp; Testing</div>
+    </div>
+    <div class="s1-card">
+      <div class="s1-num">3</div>
+      <div class="s1-name">Dev Pandey</div>
+      <div class="s1-role">System Architecture</div>
+    </div>
+    <div class="s1-card">
+      <div class="s1-num">4</div>
+      <div class="s1-name">Sanvi Wahi</div>
+      <div class="s1-role">Research &amp; Documentation</div>
+    </div>
+  </div>
+  <p class="s1-uni">Lovely Professional University, Phagwara, Punjab, India</p>
+  <div class="s1-pills">
+    <span class="s1-tag">14 Papers Surveyed</span>
+    <span class="s1-tag">&lt;100ms Latency</span>
+    <span class="s1-tag">&lt; ₹1,500 Cost</span>
+  </div>
+</div>
+</div>
+
+<!-- SLIDE 2: LITERATURE REVIEW -->
+<div class="slide" id="slide-2">
+<div class="slide-content">
+  <h2 class="slide-heading">Literature Review</h2>
+  <p class="slide-sub">Survey of 14 Studies (2013–2026) on Sensor-Based Intrusion Detection Systems</p>
+  <table class="lit-table">
+    <thead>
+      <tr><th>#</th><th>Year</th><th>Key Contribution</th><th>Limitation</th><th>Sensor Type</th><th>Future Scope</th></tr>
+    </thead>
+    <tbody id="lit-tbody">
+      <tr data-detail="PIR sensors trigger on any heat source — outdoor deployment is unreliable in warm climates. This makes ground-level intrusion detection fragile without sensor fusion." data-domain="Ground"><td>1</td><td>2013</td><td>PIR + GSM alert system for home security</td><td>Outdoor false positives from heat</td><td>PIR</td><td>Multi-sensor fusion</td></tr>
+      <tr data-detail="Restricting detection to a single horizontal plane means aerial and water threats are completely missed. No IoT connectivity prevents remote monitoring." data-domain="Ground"><td>2</td><td>2015</td><td>Ultrasonic perimeter detection with Arduino</td><td>Single-plane, no IoT</td><td>HC-SR04</td><td>IoT integration</td></tr>
+      <tr data-detail="Without a real-time dashboard operators cannot observe intrusion patterns live. Smartphone-only alerts introduce latency and dependency on app availability." data-domain="Ground"><td>3</td><td>2016</td><td>Wi-Fi enabled PIR with smartphone alerts</td><td>No real-time dashboard</td><td>PIR + ESP8266</td><td>Live visualization</td></tr>
+      <tr data-detail="GPU requirements make this approach unsuitable for edge or embedded deployment. Cost and power consumption are prohibitive for field installations." data-domain="Aerial"><td>4</td><td>2017</td><td>YOLO-based video intrusion detection</td><td>GPU required; high cost</td><td>Camera</td><td>Edge inference</td></tr>
+      <tr data-detail="Servo-mounted ultrasonic covers only the ground plane; aerial and water threats are invisible to the system. No multi-domain coverage exists." data-domain="Ground"><td>5</td><td>2018</td><td>Radar sweep with servo + ultrasonic</td><td>Single domain only</td><td>HC-SR04 + Servo</td><td>Multi-domain</td></tr>
+      <tr data-detail="CNN inference requires substantial compute resources not available on microcontrollers. Embedded deployment is infeasible without model compression." data-domain="Aerial"><td>6</td><td>2019</td><td>CNN-based aerial drone detection</td><td>Complex setup, not embedded</td><td>Camera + CNN</td><td>Lightweight model</td></tr>
+      <tr data-detail="Detecting water-surface intrusion in isolation ignores ground and aerial threats. A unified multi-domain approach is needed for comprehensive coverage." data-domain="Water"><td>7</td><td>2020</td><td>Water-surface motion via sonar</td><td>No integration with land sensors</td><td>Sonar</td><td>Cross-domain fusion</td></tr>
+      <tr data-detail="Camera-only detection cannot measure distance or trigger precise distance-based alerts. Without ultrasonic data, proximity thresholds cannot be enforced." data-domain="Ground"><td>8</td><td>2021</td><td>ESP32 camera-based motion detection</td><td>No distance measurement</td><td>ESP32-CAM</td><td>Sensor fusion</td></tr>
+      <tr data-detail="LoRa latency makes real-time dashboard visualization impractical for rapid-response scenarios. No local WebSocket means operators need cloud infrastructure." data-domain="Ground"><td>9</td><td>2022</td><td>LoRa-based border intrusion system</td><td>High latency, no local dashboard</td><td>PIR + LoRa</td><td>WebSocket dashboard</td></tr>
+      <tr data-detail="Multi-node mesh increases BOM cost and complexity significantly. Absence of manual override means there is no backup alert mechanism during sensor failure." data-domain="Multi"><td>10</td><td>2026</td><td>Multi-hop IoT sensor mesh for perimeter</td><td>High BOM cost; no touch override</td><td>Various</td><td>Cost reduction</td></tr>
+    </tbody>
+  </table>
+  <p class="lit-note">Critical Gap: Zero of 14 papers achieve simultaneous multi-domain detection — the core motivation for this work.</p>
+</div>
+</div>
+
+<!-- SLIDE 3: RESEARCH GAP -->
+<div class="slide" id="slide-3">
+<div class="slide-content">
+  <h2 class="slide-heading">Research Gap &amp; Our Improvement</h2>
+  <p class="slide-sub">What was missing — and how this project fills it</p>
+  <button id="s3-toggle-btn">Show Gap</button>
+  <div class="two-col s3-wrap" id="s3-wrap">
+    <div class="gap-col">
+      <h3 class="red">Existing Research Gaps</h3>
+      <div class="gap-rows">
+        <div class="gap-row"><span class="icon-circle icon-red">✕</span><span>All 14 papers address only single-domain detection — never combined across ground, water &amp; aerial.</span></div>
+        <div class="gap-row"><span class="icon-circle icon-red">✕</span><span>No prior work implements WebSocket-based live IoT dashboard.</span></div>
+        <div class="gap-row"><span class="icon-circle icon-red">✕</span><span>PIR-based systems fail outdoors due to temperature/humidity sensitivity.</span></div>
+        <div class="gap-row"><span class="icon-circle icon-red">✕</span><span>Vision-based systems (YOLO, CNN) require GPU — not viable for embedded.</span></div>
+        <div class="gap-row"><span class="icon-circle icon-red">✕</span><span>Servo-radar designs restricted to a single detection plane only.</span></div>
+      </div>
+    </div>
+    <div class="gap-col">
+      <h3 class="green">Our Improvements</h3>
+      <div class="gap-rows">
+        <div class="gap-row"><span class="icon-circle icon-green">✔</span><span>First system to unify aerial, ground AND water-surface detection simultaneously.</span></div>
+        <div class="gap-row"><span class="icon-circle icon-green">✔</span><span>Real-time WebSocket dashboard to any browser — no cloud or app needed.</span></div>
+        <div class="gap-row"><span class="icon-circle icon-green">✔</span><span>Non-blocking millis() firmware for concurrent sensing, sweep &amp; streaming.</span></div>
+        <div class="gap-row"><span class="icon-circle icon-green">✔</span><span>Single ESP32 + one HC-SR04 under ₹1,500 total.</span></div>
+        <div class="gap-row"><span class="icon-circle icon-green">✔</span><span>TTP223 touch override — manual alert activation, unique to this architecture.</span></div>
+      </div>
+    </div>
+  </div>
+  <!-- Comparison Table -->
+  <div style="margin-top:20px">
+    <p style="font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Side-by-Side Comparison Table</p>
+    <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+      <thead>
+        <tr>
+          <th style="width:36px;background:#f1f5f9;padding:8px;text-align:center;color:#6b7280;font-weight:600;border:1px solid #e2e8f0">#</th>
+          <th style="background:#fee2e2;padding:8px;text-align:left;color:#991b1b;font-weight:700;border:1px solid #e2e8f0">Existing Gap (Prior Work)</th>
+          <th style="background:#dcfce7;padding:8px;text-align:left;color:#166534;font-weight:700;border:1px solid #e2e8f0">Our Improvement (This System)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align:center;padding:7px 8px;border:1px solid #e2e8f0;color:#6b7280;font-weight:600">1</td>
+          <td style="padding:7px 10px;border:1px solid #e2e8f0;background:#fff">All 14 papers detect only single domain — never ground, water &amp; aerial together.</td>
+          <td style="padding:7px 10px;border:1px solid #e2e8f0;background:#f0fdf4">First system unifying aerial, ground &amp; water-surface detection simultaneously.</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;padding:7px 8px;border:1px solid #e2e8f0;color:#6b7280;font-weight:600">2</td>
+          <td style="padding:7px 10px;border:1px solid #e2e8f0;background:#fff8f8">No prior work provides WebSocket-based live IoT dashboard.</td>
+          <td style="padding:7px 10px;border:1px solid #e2e8f0;background:#f0fdf4">Real-time WebSocket dashboard to any browser — zero cloud dependency.</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;padding:7px 8px;border:1px solid #e2e8f0;color:#6b7280;font-weight:600">3</td>
+          <td style="padding:7px 10px;border:1px solid #e2e8f0;background:#fff">PIR-based systems fail outdoors due to temperature/humidity sensitivity.</td>
+          <td style="padding:7px 10px;border:1px solid #e2e8f0;background:#f0fdf4">Non-blocking millis() firmware for concurrent sensing, sweep &amp; streaming.</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;padding:7px 8px;border:1px solid #e2e8f0;color:#6b7280;font-weight:600">4</td>
+          <td style="padding:7px 10px;border:1px solid #e2e8f0;background:#fff8f8">Vision-based (YOLO, CNN) systems require GPU — not viable for embedded.</td>
+          <td style="padding:7px 10px;border:1px solid #e2e8f0;background:#f0fdf4">Single ESP32 + one HC-SR04 under ₹1,500 total — fully embedded.</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;padding:7px 8px;border:1px solid #e2e8f0;color:#6b7280;font-weight:600">5</td>
+          <td style="padding:7px 10px;border:1px solid #e2e8f0;background:#fff">Servo-radar designs restricted to a single detection plane only.</td>
+          <td style="padding:7px 10px;border:1px solid #e2e8f0;background:#f0fdf4">TTP223 touch override — manual alert activation, unique to this architecture.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- SLIDE 4: PROBLEM STATEMENT -->
+<div class="slide" id="slide-4">
+<div class="slide-content">
+  <h2 class="slide-heading">Problem Statement &amp; Objectives</h2>
+  <div class="blockquote-box">Existing intrusion detection systems monitor only a single environment. No low-cost embedded solution simultaneously covers ground, aerial &amp; water domains with real-time IoT dashboard monitoring.</div>
+  <p class="obj-label">Research Objectives</p>
+  <div class="obj-grid">
+    <div class="obj-item"><span class="obj-num">1</span><span>Design cost-effective multi-sensor IDS using a single ESP32.</span><span class="obj-check">✔</span></div>
+    <div class="obj-item"><span class="obj-num">2</span><span>Detect intrusions in aerial, ground &amp; water domains simultaneously.</span><span class="obj-check">✔</span></div>
+    <div class="obj-item"><span class="obj-num">3</span><span>Audible alert within 100ms via active piezo buzzer.</span><span class="obj-check">✔</span></div>
+    <div class="obj-item"><span class="obj-num">4</span><span>180° bilateral scanning via SG90 servo motor.</span><span class="obj-check">✔</span></div>
+    <div class="obj-item"><span class="obj-num">5</span><span>Manual override via TTP223 capacitive touch sensor.</span><span class="obj-check">✔</span></div>
+    <div class="obj-item"><span class="obj-num">6</span><span>Stream live radar data to WebSocket dashboard on local Wi-Fi.</span><span class="obj-check">✔</span></div>
+    <div class="obj-item"><span class="obj-num">7</span><span>Non-blocking firmware using millis()-based timing throughout.</span><span class="obj-check">✔</span></div>
+    <div class="obj-item"><span class="obj-num">8</span><span>Validate via physical prototype &amp; real-world intrusion scenarios.</span><span class="obj-check">✔</span></div>
+  </div>
+</div>
+</div>
+
+<!-- SLIDE 5: HARDWARE -->
+<div class="slide" id="slide-5">
+<div class="slide-content">
+  <h2 class="slide-heading">Proposed System &amp; Hardware</h2>
+  <p class="slide-sub">Components integrated into the physical prototype</p>
+  <div class="hw-grid">
+    <div class="hw-rows">
+      <div class="hw-row" onclick="openHwPopup(0,this)" id="hw-row-0"><span class="obj-num">1</span><div class="hw-info"><div class="hw-name">ESP32 DevKit V1</div><div class="hw-desc">Dual-core 240 MHz MCU with built-in Wi-Fi 802.11 b/g/n</div><span class="hw-gpio">GPIO varies</span></div><div class="hw-popup" id="hw-popup-0"><button class="hw-popup-close" onclick="closeHwPopup(event,0)">×</button><h4>ESP32 DevKit V1</h4><p><strong>Specs:</strong> Dual-core Xtensa LX6 @ 240MHz, 520KB SRAM, 4MB Flash, Wi-Fi 802.11 b/g/n, BT 4.2, 38 GPIOs</p><p><strong>GPIO:</strong> Multiple — TRIG: 5, ECHO: 18, Servo: 13, Touch: 26, Buzzer: 27</p><p><strong>Role:</strong> Central MCU running FSM, WebSocket server &amp; sensor orchestration</p></div></div>
+      <div class="hw-row" onclick="openHwPopup(1,this)" id="hw-row-1"><span class="obj-num">2</span><div class="hw-info"><div class="hw-name">HC-SR04 Ultrasonic</div><div class="hw-desc">Time-of-Flight sensor; 2–400 cm; mounted on servo for sweep</div><span class="hw-gpio">GPIO 5/18</span></div><div class="hw-popup" id="hw-popup-1"><button class="hw-popup-close" onclick="closeHwPopup(event,1)">×</button><h4>HC-SR04 Ultrasonic</h4><p><strong>Specs:</strong> Range 2–400cm, 40kHz ultrasonic, 5V, accuracy ±3mm, 15° beam angle</p><p><strong>GPIO:</strong> TRIG → GPIO 5 · ECHO → GPIO 18</p><p><strong>Role:</strong> Primary distance sensing — detects ground, aerial &amp; water-surface targets</p></div></div>
+      <div class="hw-row" onclick="openHwPopup(2,this)" id="hw-row-2"><span class="obj-num">3</span><div class="hw-info"><div class="hw-name">SG90 Micro Servo Motor</div><div class="hw-desc">0°–180° PWM bilateral radar sweep actuation</div><span class="hw-gpio">GPIO 13</span></div><div class="hw-popup" id="hw-popup-2"><button class="hw-popup-close" onclick="closeHwPopup(event,2)">×</button><h4>SG90 Micro Servo Motor</h4><p><strong>Specs:</strong> Torque 1.8kg/cm, speed 0.1s/60°, 5V, PWM 50Hz, pulse 500–2400μs</p><p><strong>GPIO:</strong> Signal → GPIO 13 (ledc channel 0)</p><p><strong>Role:</strong> Rotates HC-SR04 through 0°–180° for bilateral radar sweep coverage</p></div></div>
+      <div class="hw-row" onclick="openHwPopup(3,this)" id="hw-row-3"><span class="obj-num">4</span><div class="hw-info"><div class="hw-name">TTP223 Touch Sensor</div><div class="hw-desc">Capacitive touch; active HIGH; manual alert override</div><span class="hw-gpio">GPIO 26</span></div><div class="hw-popup" id="hw-popup-3"><button class="hw-popup-close" onclick="closeHwPopup(event,3)">×</button><h4>TTP223 Touch Sensor</h4><p><strong>Specs:</strong> Capacitive, 3.3–5V, active HIGH output, 1μA sleep, response &lt;60ms</p><p><strong>GPIO:</strong> OUT → GPIO 26 (digital input, pulled LOW)</p><p><strong>Role:</strong> Manual alert override — forces FSM into ALERT state on touch press</p></div></div>
+      <div class="hw-row" onclick="openHwPopup(4,this)" id="hw-row-4"><span class="obj-num">5</span><div class="hw-info"><div class="hw-name">Active Piezo Buzzer 5V</div><div class="hw-desc">Audible alert; HIGH = alarm; &lt;100ms latency</div><span class="hw-gpio">GPIO 27</span></div><div class="hw-popup" id="hw-popup-4"><button class="hw-popup-close" onclick="closeHwPopup(event,4)">×</button><h4>Active Piezo Buzzer 5V</h4><p><strong>Specs:</strong> Active type (internal oscillator), 5V, ~85dB @ 10cm, 2kHz tone</p><p><strong>GPIO:</strong> + → GPIO 27 via NPN transistor · GND → common ground</p><p><strong>Role:</strong> Immediate audible alert on intrusion detection (&lt;100ms from FSM trigger)</p></div></div>
+    </div>
+    <div>
+      <div id="fig7-upload-slot" onclick="triggerFig7Upload()" style="background:#f1f5f9;border-radius:10px;aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border:1.5px dashed #e2e8f0;overflow:hidden;transition:border-color 200ms" onmouseover="this.style.borderColor='#2563eb'" onmouseout="this.style.borderColor=fig7Uploaded?'#2563eb':'#e2e8f0'">
+        <div id="fig7-inner" style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <span style="font-size:26px">📷</span>
+          <span style="font-size:11px;color:#6b7280;font-weight:500">Click to upload prototype photo</span>
+          <span style="font-size:10px;color:#9ca3af">Fig. 7 — Assembled Prototype</span>
+        </div>
+      </div>
+      <input type="file" id="fig7-file" accept="image/*" style="display:none" onchange="handleFig7Upload(this)">
+      <div style="font-size:10px;color:#9ca3af;text-align:center;margin-top:6px">ESP32 DevKit V1 · HC-SR04 · SG90 · TTP223 · Piezo Buzzer</div>
+    </div>
+  </div>
+  <div class="hw-cost">Total Cost: Under ₹1,500 · Open Hardware · Fully Replicable</div>
+</div>
+</div>
+
+<!-- SLIDE 6: ARCHITECTURE -->
+<div class="slide" id="slide-6">
+<div class="slide-content">
+  <h2 class="slide-heading">System Architecture</h2>
+  <p class="slide-sub">Three-layer design: Sensing → Processing → Output/Alert with FSM control</p>
+  <div class="arch-cols">
+    <div class="arch-card arch-blue">
+      <div class="arch-card-head">SENSING</div>
+      <div class="arch-card-body"><ul>
+        <li>HC-SR04 Ultrasonic Sensor</li>
+        <li>SG90 Servo 0°–180° sweep</li>
+        <li>TTP223 Capacitive Touch</li>
+        <li>GPIO: 5, 18, 13, 26</li>
+      </ul></div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-card arch-navy">
+      <div class="arch-card-head">PROCESSING</div>
+      <div class="arch-card-body"><ul>
+        <li>ESP32 Dual-Core 240 MHz</li>
+        <li>FSM: IDLE→SCANNING→ALERT→GATE</li>
+        <li>100ms millis() polling cycle</li>
+        <li>AsyncWebServer + WebSocket</li>
+      </ul></div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-card arch-green">
+      <div class="arch-card-head">OUTPUT</div>
+      <div class="arch-card-body"><ul>
+        <li>Piezo Buzzer GPIO 27 &lt;100ms</li>
+        <li>WebSocket JSON Broadcast</li>
+        <li>Live HTML5 Radar Dashboard</li>
+        <li>Audible + Visual Alerts</li>
+      </ul></div>
+    </div>
+  </div>
+  <p class="fsm-label">FSM State Flow:</p>
+  <div class="fsm-row" id="fsm-row">
+    <div class="fsm-box" id="fsm-0">IDLE</div>
+    <span class="fsm-arrow" id="fsm-a0">→</span>
+    <div class="fsm-box" id="fsm-1">SCANNING</div>
+    <span class="fsm-arrow" id="fsm-a1">→</span>
+    <div class="fsm-box" id="fsm-2">ALERT</div>
+    <span class="fsm-arrow" id="fsm-a2">→</span>
+    <div class="fsm-box" id="fsm-3">GATE_CTRL</div>
+  </div>
+  <button id="fsm-sim-btn" onclick="simulateFSM()">▶ Simulate FSM</button>
+</div>
+</div>
+
+<!-- SLIDE 7: METHODOLOGY -->
+<div class="slide" id="slide-7">
+<div class="slide-content">
+  <h2 class="slide-heading">Methodology</h2>
+  <p class="slide-sub">Work done by each team member</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px" id="s7-grid">
+    <div class="s7-card"><span class="s7-pencil">✎</span>
+      <div style="font-size:15px;font-weight:700;color:#2563eb">Omm Atrayu Piri</div>
+      <div style="font-size:12px;color:#6b7280;font-style:italic;margin-bottom:12px">Hardware &amp; Firmware Lead</div>
+      <div class="s7-placeholder" onclick="editCard(0)">Contribution to be added by team member</div>
+      <textarea class="s7-textarea" id="s7-ta-0" onblur="saveCard(0)"></textarea>
+      <div class="s7-saved" id="s7-saved-0"></div>
+    </div>
+    <div class="s7-card"><span class="s7-pencil">✎</span>
+      <div style="font-size:15px;font-weight:700;color:#2563eb">Gauri Priya</div>
+      <div style="font-size:12px;color:#6b7280;font-style:italic;margin-bottom:12px">IoT Dashboard &amp; Testing</div>
+      <div class="s7-placeholder" onclick="editCard(1)">Contribution to be added by team member</div>
+      <textarea class="s7-textarea" id="s7-ta-1" onblur="saveCard(1)"></textarea>
+      <div class="s7-saved" id="s7-saved-1"></div>
+    </div>
+    <div class="s7-card"><span class="s7-pencil">✎</span>
+      <div style="font-size:15px;font-weight:700;color:#2563eb">Dev Pandey</div>
+      <div style="font-size:12px;color:#6b7280;font-style:italic;margin-bottom:12px">System Architecture</div>
+      <div class="s7-placeholder" onclick="editCard(2)">Contribution to be added by team member</div>
+      <textarea class="s7-textarea" id="s7-ta-2" onblur="saveCard(2)"></textarea>
+      <div class="s7-saved" id="s7-saved-2"></div>
+    </div>
+    <div class="s7-card"><span class="s7-pencil">✎</span>
+      <div style="font-size:15px;font-weight:700;color:#2563eb">Sanvi Wahi</div>
+      <div style="font-size:12px;color:#6b7280;font-style:italic;margin-bottom:12px">Research &amp; Documentation</div>
+      <div class="s7-placeholder" onclick="editCard(3)">Contribution to be added by team member</div>
+      <textarea class="s7-textarea" id="s7-ta-3" onblur="saveCard(3)"></textarea>
+      <div class="s7-saved" id="s7-saved-3"></div>
+    </div>
+  </div>
+  <p style="text-align:center;font-size:12px;color:#6b7280;margin-top:20px">Each member will present their section during Q&amp;A.</p>
+</div>
+</div>
+
+<!-- SLIDE 8: FLOWCHART -->
+<div class="slide" id="slide-8">
+<div class="slide-content">
+  <h2 class="slide-heading">System Flowchart</h2>
+  <p class="slide-sub">End-to-end operation flow from power-on to alert &amp; dashboard broadcast</p>
+  <div style="display:flex;justify-content:center;overflow-x:auto;padding-bottom:8px">
+  <svg id="flowchart-svg" viewBox="0 0 820 640" width="820" height="640" font-family="Inter,sans-serif" font-size="13">
+    <!-- Connector lines -->
+    <!-- START -> Init -->
+    <line x1="410" y1="52" x2="410" y2="92" stroke="#2563eb" stroke-width="2"/>
+    <!-- Init -> Servo Sweep -->
+    <line x1="410" y1="128" x2="410" y2="168" stroke="#2563eb" stroke-width="2"/>
+    <!-- Servo -> Read Sensor -->
+    <line x1="410" y1="204" x2="410" y2="244" stroke="#2563eb" stroke-width="2"/>
+    <!-- Read -> Decision: Intrusion? -->
+    <line x1="410" y1="280" x2="410" y2="316" stroke="#2563eb" stroke-width="2"/>
+    <!-- Decision YES down -->
+    <line x1="410" y1="356" x2="410" y2="396" stroke="#dc2626" stroke-width="2"/>
+    <!-- Decision NO right -> Touch? -->
+    <line x1="530" y1="336" x2="620" y2="336" stroke="#16a34a" stroke-width="2"/>
+    <line x1="620" y1="336" x2="620" y2="396" stroke="#16a34a" stroke-width="2"/>
+    <!-- Buzzer+WS -> Done? -->
+    <line x1="410" y1="432" x2="410" y2="472" stroke="#2563eb" stroke-width="2"/>
+    <!-- Touch YES -> Alert -->
+    <line x1="620" y1="432" x2="620" y2="472" stroke="#dc2626" stroke-width="2"/>
+    <!-- Touch NO loop back up -->
+    <line x1="690" y1="412" x2="740" y2="412" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <line x1="740" y1="412" x2="740" y2="186" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <line x1="740" y1="186" x2="550" y2="186" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <!-- Done loop back to Servo -->
+    <line x1="290" y1="492" x2="80" y2="492" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <line x1="80" y1="492" x2="80" y2="186" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <line x1="80" y1="186" x2="270" y2="186" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <!-- Manual Alert -> Done -->
+    <line x1="620" y1="508" x2="620" y2="540" stroke="#2563eb" stroke-width="2"/>
+    <line x1="620" y1="540" x2="490" y2="540" stroke="#2563eb" stroke-width="2"/>
+    <line x1="490" y1="540" x2="490" y2="492" stroke="#2563eb" stroke-width="2"/>
+
+    <!-- Arrow heads -->
+    <polygon points="410,92 405,82 415,82" fill="#2563eb"/>
+    <polygon points="410,168 405,158 415,158" fill="#2563eb"/>
+    <polygon points="410,244 405,234 415,234" fill="#2563eb"/>
+    <polygon points="410,316 405,306 415,306" fill="#2563eb"/>
+    <polygon points="410,396 405,386 415,386" fill="#dc2626"/>
+    <polygon points="620,396 615,386 625,386" fill="#16a34a"/>
+    <polygon points="410,472 405,462 415,462" fill="#2563eb"/>
+    <polygon points="620,472 615,462 625,462" fill="#dc2626"/>
+    <polygon points="550,186 560,181 560,191" fill="#9ca3af"/>
+    <polygon points="270,186 280,181 280,191" fill="#9ca3af"/>
+
+    <!-- START (oval) -->
+    <ellipse cx="410" cy="36" rx="70" ry="18" fill="#0f172a"/>
+    <text x="410" y="40" text-anchor="middle" fill="#fff" font-weight="700" font-size="13">POWER ON</text>
+
+    <!-- Box: Initialize ESP32 -->
+    <rect x="270" y="92" width="280" height="36" rx="6" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="410" y="115" text-anchor="middle" fill="#1e40af" font-weight="600">Initialize ESP32, Wi-Fi &amp; WebSocket Server</text>
+
+    <!-- Box: Start Servo Sweep -->
+    <rect x="270" y="168" width="280" height="36" rx="6" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="410" y="191" text-anchor="middle" fill="#1e40af" font-weight="600">Start Servo Sweep (0°→180°) via millis()</text>
+
+    <!-- Box: Read HC-SR04 -->
+    <rect x="270" y="244" width="280" height="36" rx="6" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="410" y="267" text-anchor="middle" fill="#1e40af" font-weight="600">Read HC-SR04 Distance (per 100ms poll)</text>
+
+    <!-- Diamond: Intrusion? -->
+    <polygon points="410,316 530,336 410,356 290,336" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.5"/>
+    <text x="410" y="334" text-anchor="middle" fill="#92400e" font-weight="700">Distance &lt; 20cm?</text>
+    <!-- YES label -->
+    <text x="420" y="375" fill="#dc2626" font-size="11" font-weight="700">YES</text>
+    <!-- NO label -->
+    <text x="538" y="330" fill="#16a34a" font-size="11" font-weight="700">NO</text>
+
+    <!-- Box: Buzzer + WebSocket -->
+    <rect x="270" y="396" width="280" height="36" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="410" y="415" text-anchor="middle" fill="#991b1b" font-weight="600">Activate Buzzer + Broadcast</text>
+    <text x="410" y="428" text-anchor="middle" fill="#991b1b" font-size="11">WebSocket JSON Alert to Dashboard</text>
+
+    <!-- Diamond: Touch Sensor? -->
+    <polygon points="620,396 690,412 620,432 550,412" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="620" y="410" text-anchor="middle" fill="#166534" font-weight="700">Touch</text>
+    <text x="620" y="422" text-anchor="middle" fill="#166534" font-weight="700">Pressed?</text>
+    <!-- YES label touch -->
+    <text x="628" y="452" fill="#dc2626" font-size="11" font-weight="700">YES</text>
+    <!-- NO label touch -->
+    <text x="694" y="408" fill="#9ca3af" font-size="11" font-weight="700">NO→loop</text>
+
+    <!-- Box: Manual Alert -->
+    <rect x="530" y="472" width="180" height="36" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="620" y="491" text-anchor="middle" fill="#991b1b" font-weight="600">Force FSM → ALERT</text>
+    <text x="620" y="504" text-anchor="middle" fill="#991b1b" font-size="11">(Manual Override)</text>
+
+    <!-- Box: Broadcast + Log -->
+    <rect x="290" y="472" width="200" height="36" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="390" y="491" text-anchor="middle" fill="#166534" font-weight="600">Log Event + Update</text>
+    <text x="390" y="504" text-anchor="middle" fill="#166534" font-size="11">Dashboard State → Loop</text>
+
+    <!-- Legend -->
+    <rect x="30" y="580" width="12" height="12" rx="2" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="47" y="591" fill="#374151" font-size="11">Process</text>
+    <polygon points="100,590 116,586 110,594" fill="#fef9c3" stroke="#ca8a04" stroke-width="1"/>
+    <text x="120" y="591" fill="#374151" font-size="11">Decision</text>
+    <rect x="200" y="584" width="20" height="2" fill="#dc2626"/>
+    <text x="226" y="591" fill="#374151" font-size="11">Alert path</text>
+    <rect x="300" y="584" width="20" height="2" fill="#9ca3af" stroke-dasharray="4,2"/>
+    <text x="326" y="591" fill="#374151" font-size="11">Loop-back</text>
+  </svg>
+  </div>
+</div>
+</div>
+
+<!-- SLIDE 9: RESULTS (was 8) -->
+<div class="slide" id="slide-9">
+<div class="slide-content">
+  <h2 class="slide-heading">Results</h2>
+  <p class="slide-sub">Physical prototype testing — validated under real-world conditions</p>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px">
+    <div style="border:1.5px solid #e2e8f0;border-top:4px solid #2563eb;border-radius:10px;padding:16px;text-align:center">
+      <div class="stat-num" id="stat-0" style="font-size:32px;font-weight:800;color:#2563eb">&lt;100ms</div>
+      <div style="font-size:12px;color:#6b7280;margin-top:4px">Alert Latency (buzzer + dashboard)</div>
+    </div>
+    <div style="border:1.5px solid #e2e8f0;border-top:4px solid #2563eb;border-radius:10px;padding:16px;text-align:center">
+      <div class="stat-num" id="stat-1" style="font-size:32px;font-weight:800;color:#2563eb">&lt;200ms</div>
+      <div style="font-size:12px;color:#6b7280;margin-top:4px">End-to-End (intrusion → display)</div>
+    </div>
+    <div style="border:1.5px solid #e2e8f0;border-top:4px solid #2563eb;border-radius:10px;padding:16px;text-align:center">
+      <div class="stat-num" id="stat-2" style="font-size:32px;font-weight:800;color:#2563eb">0</div>
+      <div style="font-size:12px;color:#6b7280;margin-top:4px">False Positives during idle sweep</div>
+    </div>
+    <div style="border:1.5px solid #e2e8f0;border-top:4px solid #2563eb;border-radius:10px;padding:16px;text-align:center">
+      <div class="stat-num" id="stat-3" style="font-size:32px;font-weight:800;color:#2563eb">100%</div>
+      <div style="font-size:12px;color:#6b7280;margin-top:4px">FSM State Transition Accuracy</div>
+    </div>
+  </div>
+  <hr class="divider"/>
+  <p style="font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">Key Test Findings</p>
+  <div style="display:flex;flex-direction:column;gap:0" id="result-rows">
+    <div class="result-row" style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:13.5px;color:#374151"><span style="color:#16a34a;font-weight:700;flex-shrink:0">✔</span><span>Hand-held at 10–18 cm triggered buzzer within one 100ms polling cycle.</span></div>
+    <div class="result-row" style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:13.5px;color:#374151"><span style="color:#16a34a;font-weight:700;flex-shrink:0">✔</span><span>Servo completed 0°–180° bilateral sweep without actuator stalling — millis() validated.</span></div>
+    <div class="result-row" style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:13.5px;color:#374151"><span style="color:#16a34a;font-weight:700;flex-shrink:0">✔</span><span>WebSocket dashboard showed live sweep, red blip &amp; timestamped log entries within 100ms.</span></div>
+    <div class="result-row" style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:13.5px;color:#374151"><span style="color:#16a34a;font-weight:700;flex-shrink:0">✔</span><span>TTP223 touch triggered manual override on every test press.</span></div>
+    <div class="result-row" style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:13.5px;color:#374151"><span style="color:#16a34a;font-weight:700;flex-shrink:0">✔</span><span>All four FSM states transitioned correctly under live conditions.</span></div>
+    <div class="result-row" style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;font-size:13.5px;color:#374151"><span style="color:#16a34a;font-weight:700;flex-shrink:0">✔</span><span>10–20cm detection window filtered near-field reflections — zero false positives.</span></div>
+  </div>
+</div>
+</div>
+
+<!-- SLIDE 10: ADVANTAGES (was 9) -->
+<div class="slide" id="slide-10">
+<div class="slide-content">
+  <h2 class="slide-heading">Advantages &amp; Components Used</h2>
+  <p class="slide-sub">Why this system stands out — and what makes it work</p>
+  <div class="two-col">
+    <div>
+      <h3 style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:16px">Key Advantages</h3>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:#374151"><span style="color:#2563eb;font-size:16px;flex-shrink:0">★</span><span>First system providing simultaneous ground, aerial &amp; water-surface intrusion detection.</span></div>
+        <div style="display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:#374151"><span style="color:#2563eb;font-size:16px;flex-shrink:0">★</span><span>Real-time WebSocket dashboard — no cloud, no app, any browser.</span></div>
+        <div style="display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:#374151"><span style="color:#2563eb;font-size:16px;flex-shrink:0">★</span><span>Total cost under ₹1,500 — accessible for education &amp; field deployment.</span></div>
+        <div style="display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:#374151"><span style="color:#2563eb;font-size:16px;flex-shrink:0">★</span><span>Non-blocking firmware: concurrent sensor polling, servo sweep &amp; IoT streaming.</span></div>
+        <div style="display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:#374151"><span style="color:#2563eb;font-size:16px;flex-shrink:0">★</span><span>Scalable open hardware — easily extensible with more sensors.</span></div>
+      </div>
+    </div>
+    <div>
+      <h3 style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:16px">Components Used</h3>
+      <div style="display:flex;flex-direction:column;gap:0">
+        <div style="display:grid;grid-template-columns:1fr 1fr;padding:9px 0;border-bottom:1px solid #f1f5f9;font-size:13px"><span style="font-weight:600;color:#111827">ESP32 DevKit V1</span><span style="color:#6b7280">240MHz dual-core, Wi-Fi, 38 GPIOs</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;padding:9px 0;border-bottom:1px solid #f1f5f9;font-size:13px"><span style="font-weight:600;color:#111827">HC-SR04</span><span style="color:#6b7280">ToF 2–400cm, servo-mounted</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;padding:9px 0;border-bottom:1px solid #f1f5f9;font-size:13px"><span style="font-weight:600;color:#111827">SG90 Servo</span><span style="color:#6b7280">180° PWM, GPIO 13</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;padding:9px 0;border-bottom:1px solid #f1f5f9;font-size:13px"><span style="font-weight:600;color:#111827">TTP223 Touch</span><span style="color:#6b7280">Capacitive, active HIGH, GPIO 26</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;padding:9px 0;font-size:13px"><span style="font-weight:600;color:#111827">Piezo Buzzer</span><span style="color:#6b7280">Active 5V, GPIO 27, &lt;100ms</span></div>
+      </div>
+      <div style="margin-top:16px;font-size:13px;font-weight:700;color:#15803d">Total BOM: &lt; ₹1,500</div>
+    </div>
+  </div>
+  <div class="compare-section">
+    <p class="compare-label">Domain Coverage Comparison</p>
+    <div class="bar-row"><div class="bar-title">Prior Systems (14 papers)</div><div class="bar-track"><div class="bar-fill bar-fill-red" id="bar-prior"><span class="bar-tag">1 Domain</span></div></div></div>
+    <div class="bar-row"><div class="bar-title">This System</div><div class="bar-track"><div class="bar-fill bar-fill-green" id="bar-ours"><span class="bar-tag">3 Domains</span></div></div></div>
+  </div>
+</div>
+</div>
+
+<!-- SLIDE 11: PROJECT IMAGES (was 10) -->
+<div class="slide" id="slide-11">
+<div class="slide-content">
+  <h2 class="slide-heading">Project Images</h2>
+  <p class="slide-sub">Hardware setup and component photos</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+    <div style="cursor:pointer" onclick="openLightbox(0)">
+      <div class="img-placeholder" id="img-slot-0" style="background:#f1f5f9;border-radius:10px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden"><span style="color:#9ca3af;font-size:13px;font-style:italic">Insert Image Here</span></div>
+      <div style="font-size:13px;font-weight:600;color:#111827;margin-top:8px">Prototype Overview</div>
+      <div style="font-size:12px;color:#6b7280">Full assembled breadboard setup</div>
+    </div>
+    <div style="cursor:pointer" onclick="openLightbox(1)">
+      <div class="img-placeholder" id="img-slot-1" style="background:#f1f5f9;border-radius:10px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden"><span style="color:#9ca3af;font-size:13px;font-style:italic">Insert Image Here</span></div>
+      <div style="font-size:13px;font-weight:600;color:#111827;margin-top:8px">ESP32 + Wiring</div>
+      <div style="font-size:12px;color:#6b7280">Microcontroller and sensor connections</div>
+    </div>
+    <div style="cursor:pointer" onclick="openLightbox(2)">
+      <div class="img-placeholder" id="img-slot-2" style="background:#f1f5f9;border-radius:10px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden"><span style="color:#9ca3af;font-size:13px;font-style:italic">Insert Image Here</span></div>
+      <div style="font-size:13px;font-weight:600;color:#111827;margin-top:8px">Servo + HC-SR04 Mount</div>
+      <div style="font-size:12px;color:#6b7280">Bilateral sweep mechanism</div>
+    </div>
+    <div style="cursor:pointer" onclick="openLightbox(3)">
+      <div class="img-placeholder" id="img-slot-3" style="background:#f1f5f9;border-radius:10px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden"><span style="color:#9ca3af;font-size:13px;font-style:italic">Insert Image Here</span></div>
+      <div style="font-size:13px;font-weight:600;color:#111827;margin-top:8px">WebSocket Dashboard</div>
+      <div style="font-size:12px;color:#6b7280">Live radar sweep on browser</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- SLIDE 12: PROJECT IMAGES CONT (was 11) -->
+<div class="slide" id="slide-12">
+<div class="slide-content">
+  <h2 class="slide-heading">Project Images (cont.)</h2>
+  <p class="slide-sub">Hardware setup and component photos — continued</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+    <div style="cursor:pointer" onclick="openLightbox(4)">
+      <div class="img-placeholder" id="img-slot-4" style="background:#f1f5f9;border-radius:10px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden"><span style="color:#9ca3af;font-size:13px;font-style:italic">Insert Image Here</span></div>
+      <div style="font-size:13px;font-weight:600;color:#111827;margin-top:8px">TTP223 Touch Sensor</div>
+      <div style="font-size:12px;color:#6b7280">Manual override module</div>
+    </div>
+    <div style="cursor:pointer" onclick="openLightbox(5)">
+      <div class="img-placeholder" id="img-slot-5" style="background:#f1f5f9;border-radius:10px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden"><span style="color:#9ca3af;font-size:13px;font-style:italic">Insert Image Here</span></div>
+      <div style="font-size:13px;font-weight:600;color:#111827;margin-top:8px">Piezo Buzzer Output</div>
+      <div style="font-size:12px;color:#6b7280">Alert actuation on detection</div>
+    </div>
+    <div style="cursor:pointer" onclick="openLightbox(6)">
+      <div class="img-placeholder" id="img-slot-6" style="background:#f1f5f9;border-radius:10px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden"><span style="color:#9ca3af;font-size:13px;font-style:italic">Insert Image Here</span></div>
+      <div style="font-size:13px;font-weight:600;color:#111827;margin-top:8px">Breadboard Full View</div>
+      <div style="font-size:12px;color:#6b7280">Complete wiring layout</div>
+    </div>
+    <div style="cursor:pointer" onclick="openLightbox(7)">
+      <div class="img-placeholder" id="img-slot-7" style="background:#f1f5f9;border-radius:10px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden"><span style="color:#9ca3af;font-size:13px;font-style:italic">Insert Image Here</span></div>
+      <div style="font-size:13px;font-weight:600;color:#111827;margin-top:8px">Detection Test Result</div>
+      <div style="font-size:12px;color:#6b7280">Live blip on radar dashboard</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- SLIDE 13: THANK YOU (was 12) -->
+<div class="slide" id="slide-13">
+<div class="slide-content" style="position:relative;text-align:center;background:radial-gradient(ellipse at center,#fff 40%,#eff6ff 100%);min-height:calc(100vh - 100px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;border-radius:16px">
+  <canvas id="particle-canvas"></canvas>
+  <h2 style="font-size:48px;font-weight:800;color:#0f172a;margin-bottom:12px">Thank You</h2>
+  <p style="font-size:18px;color:#2563eb;font-weight:500;margin-bottom:24px">IoT-Enabled Multi-Domain Intrusion Detection System</p>
+  <hr style="border:none;border-top:1px solid #e2e8f0;width:320px;margin:0 auto 24px"/>
+  <p style="font-size:15px;color:#6b7280;margin-bottom:10px">Omm Atrayu Piri · Gauri Priya · Dev Pandey · Sanvi Wahi</p>
+  <p style="font-size:13px;color:#6b7280;margin-bottom:28px">Department of Computer Science &amp; Engineering · Lovely Professional University · Punjab, India</p>
+  <p style="font-size:16px;color:#2563eb;font-style:italic">Questions &amp; Discussion Welcome</p>
+</div>
+</div>
+
+</div><!-- end slides-container -->
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="closeLightboxOutside(event)">
+  <div id="lightbox-inner">
+    <button id="lightbox-close" onclick="closeLightbox()">×</button>
+    <button class="lb-nav" id="lb-prev" onclick="lbNav(-1,event)">‹</button>
+    <span style="color:#9ca3af;font-size:14px;font-style:italic">Image Placeholder</span>
+    <button class="lb-nav" id="lb-next" onclick="lbNav(1,event)">›</button>
+  </div>
+  <div id="lightbox-label">Slot 1 of 8</div>
+</div>
+
+<!-- OVERVIEW -->
+<div id="overview">
+  <button id="overview-close" onclick="closeOverview()">Close ×</button>
+  <h2>Slide Overview</h2>
+  <div id="overview-grid"></div>
+</div>
+
+<!-- KEYBOARD HINT -->
+<div id="kbd-hint">← → Navigate · Click items to interact · Press F for fullscreen · Press O for overview</div>
+
+<!-- BOTTOM BAR -->
+<div id="bottom-bar">
+  <button class="nav-btn" id="btn-prev" onclick="navigate(-1)">← Prev</button>
+  <div id="dots"></div>
+  <button class="nav-btn" id="btn-next" onclick="navigate(1)">Next →</button>
+</div>
+
+<script>
+let current=1;const total=13;
+const slideNames=['Title','Literature Review','Research Gap','Objectives','Hardware','Architecture','Methodology','Flowchart','Results','Advantages','Project Images','Project Images II','Thank You'];
+
+/* ---- SETUP SCREEN ---- */
+const uploadedImages=new Array(8).fill(null);
+
+window.triggerUpload=(i)=>document.getElementById('file-'+i).click();
+
+window.handleUpload=(i,input)=>{
+  const file=input.files[0];if(!file)return;
+  const url=URL.createObjectURL(file);
+  uploadedImages[i]=url;
+  // Update setup slot preview
+  const slot=document.getElementById('slot-'+i);
+  const inner=slot.querySelector('.setup-slot-inner');
+  inner.innerHTML='<img src="'+url+'" alt="Image '+i+'">';
+  slot.classList.add('has-image');
+  // Add badge
+  let badge=slot.querySelector('.setup-slot-badge');
+  if(!badge){badge=document.createElement('div');badge.className='setup-slot-badge';slot.appendChild(badge);}
+  badge.textContent='✓ Ready';
+  // Update upload count
+  const count=uploadedImages.filter(Boolean).length;
+  document.getElementById('start-btn').innerHTML='<span class="play-icon">▶</span> Start Presentation'+(count>0?' ('+count+'/8 uploaded)':'');
+  // Inject into slide placeholder
+  setSlideImage(i,url);
+};
+
+function setSlideImage(i,url){
+  const slot=document.getElementById('img-slot-'+i);
+  if(!slot)return;
+  slot.innerHTML='<img src="'+url+'" style="width:100%;height:100%;object-fit:cover;display:block;" alt="">';
+  slot.style.background='#000';
+}
+
+window.startPresentation=()=>{
+  document.getElementById('setup-screen').classList.add('hidden');
+  buildDots();goTo(1);
+  setTimeout(()=>document.getElementById('kbd-hint').classList.add('fade'),3000);
+};
+
+/* ---- FIG 7 UPLOAD (Slide 5) ---- */
+let fig7Uploaded=false;
+window.triggerFig7Upload=()=>document.getElementById('fig7-file').click();
+window.handleFig7Upload=(input)=>{
+  const file=input.files[0];if(!file)return;
+  const url=URL.createObjectURL(file);
+  fig7Uploaded=true;
+  const slot=document.getElementById('fig7-upload-slot');
+  slot.style.borderStyle='solid';slot.style.borderColor='#2563eb';slot.style.padding='0';
+  slot.innerHTML='<img src="'+url+'" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Fig. 7 Assembled Prototype">';
+};
+
+/* ---- NAVIGATION ---- */
+function buildDots(){
+  const c=document.getElementById('dots');c.innerHTML='';
+  for(let i=1;i<=total;i++){const b=document.createElement('button');b.className='dot'+(i===1?' active':'');b.id='dot-'+i;b.setAttribute('aria-label','Slide '+i);b.onclick=()=>goTo(i);c.appendChild(b);}
+}
+function goTo(n){
+  document.getElementById('slide-'+current).classList.remove('active');
+  document.getElementById('dot-'+current).classList.remove('active');
+  const prev=current;
+  current=Math.max(1,Math.min(n,total));
+  document.getElementById('slide-'+current).classList.add('active');
+  document.getElementById('dot-'+current).classList.add('active');
+  document.getElementById('slide-counter').textContent=String(current).padStart(2,'0')+' / '+total;
+  document.getElementById('progress-bar').style.width=(current/total*100)+'%';
+  document.getElementById('btn-prev').disabled=current===1;
+  document.getElementById('btn-next').disabled=current===total;
+  document.getElementById('slide-'+current).scrollTop=0;
+  onSlideEnter(current);
+}
+function navigate(dir){goTo(current+dir);}
+
+/* ---- SLIDE ENTRY HOOKS ---- */
+function onSlideEnter(n){
+  if(n===6)animateFSM();
+  if(n===9){animateStats();animateResults();}
+  if(n===10)animateBars();
+  if(n===13)startParticles();
+}
+
+/* ---- SLIDE 2: LIT TABLE ---- */
+document.addEventListener('DOMContentLoaded',()=>{
+  const rows=document.querySelectorAll('#lit-tbody tr[data-detail]');
+  rows.forEach(row=>{
+    const detail=row.dataset.detail;const domain=row.dataset.domain;
+    const dr=document.createElement('tr');dr.className='lit-detail';
+    const td=document.createElement('td');td.colSpan=6;
+    td.innerHTML=detail+'<br><span class="lit-domain-tag">'+domain+'</span>';
+    dr.appendChild(td);
+    row.after(dr);
+    row.onclick=()=>{
+      const isOpen=dr.classList.contains('open');
+      document.querySelectorAll('.lit-detail.open').forEach(d=>d.classList.remove('open'));
+      document.querySelectorAll('#lit-tbody tr.expanded').forEach(r=>r.classList.remove('expanded'));
+      if(!isOpen){dr.classList.add('open');row.classList.add('expanded');}
+    };
+  });
+
+  /* SLIDE 3 TOGGLE */
+  const cols=document.querySelectorAll('#s3-wrap .gap-col');
+  const btn=document.getElementById('s3-toggle-btn');
+  let showing='gap';
+  if(cols[1])cols[1].style.display='none';
+  btn.textContent='Show Solution';
+  btn.onclick=()=>{
+    if(showing==='gap'){
+      cols[0].style.display='none';
+      if(cols[1]){cols[1].style.display='';cols[1].style.opacity='0';cols[1].style.transform='translateX(40px)';requestAnimationFrame(()=>{cols[1].style.transition='opacity 400ms,transform 400ms';cols[1].style.opacity='1';cols[1].style.transform='translateX(0)';});}
+      btn.textContent='Show Gap';showing='solution';
+    }else{
+      if(cols[1]){cols[1].style.opacity='0';cols[1].style.transform='translateX(40px)';setTimeout(()=>{cols[1].style.display='none';},400);}
+      cols[0].style.display='';cols[0].style.opacity='0';cols[0].style.transform='translateX(-40px)';requestAnimationFrame(()=>{cols[0].style.transition='opacity 400ms,transform 400ms';cols[0].style.opacity='1';cols[0].style.transform='translateX(0)';});
+      btn.textContent='Show Solution';showing='gap';
+    }
+  };
+
+  /* SLIDE 4 OBJ CHECK */
+  document.querySelectorAll('.obj-item').forEach(item=>{item.onclick=()=>item.classList.toggle('checked');});
+
+  /* SLIDE 7 EDITABLE */
+  const s7data=['','','',''];
+  window.editCard=(i)=>{
+    document.querySelectorAll('.s7-placeholder')[i].style.display='none';
+    const ta=document.getElementById('s7-ta-'+i);
+    ta.value=s7data[i];ta.style.display='block';ta.focus();
+  };
+  window.saveCard=(i)=>{
+    const ta=document.getElementById('s7-ta-'+i);
+    s7data[i]=ta.value;ta.style.display='none';
+    const ph=document.querySelectorAll('.s7-placeholder')[i];
+    const sv=document.getElementById('s7-saved-'+i);
+    if(s7data[i].trim()){ph.style.display='none';sv.style.display='block';sv.textContent=s7data[i];}
+    else{ph.style.display='';sv.style.display='none';}
+  };
+
+  /* OVERVIEW BUILD */
+  const og=document.getElementById('overview-grid');
+  slideNames.forEach((name,i)=>{
+    const card=document.createElement('div');card.className='ov-card';
+    card.innerHTML='<div class="ov-num">Slide '+(i+1)+'</div><div class="ov-title">'+name+'</div>';
+    card.onclick=()=>{goTo(i+1);closeOverview();};
+    og.appendChild(card);
+  });
+
+  /* HINT FADE handled by startPresentation() */
+});
+
+/* ---- SLIDE 5 HARDWARE POPUPS ---- */
+window.openHwPopup=(i,row)=>{
+  document.querySelectorAll('.hw-popup.open').forEach(p=>p.classList.remove('open'));
+  const p=document.getElementById('hw-popup-'+i);
+  if(p)p.classList.add('open');
+  event.stopPropagation();
+};
+window.closeHwPopup=(e,i)=>{e.stopPropagation();document.getElementById('hw-popup-'+i).classList.remove('open');};
+document.addEventListener('click',()=>document.querySelectorAll('.hw-popup.open').forEach(p=>p.classList.remove('open')));
+
+/* ---- SLIDE 6 FSM ANIMATE ---- */
+let fsm6done=false;
+function animateFSM(){
+  if(fsm6done)return;fsm6done=true;
+  [0,1,2,3].forEach((i,idx)=>{
+    setTimeout(()=>{
+      const box=document.getElementById('fsm-'+i);if(box)box.classList.add('visible');
+      const arr=document.getElementById('fsm-a'+(i-1));if(arr&&i>0)arr.classList.add('visible');
+    },idx*300);
+  });
+}
+window.simulateFSM=()=>{
+  const btn=document.getElementById('fsm-sim-btn');btn.disabled=true;
+  const seq=[{id:'fsm-0',cls:'glow-blue'},{id:'fsm-1',cls:'glow-blue'},{id:'fsm-2',cls:'glow-red'},{id:'fsm-3',cls:'glow-blue'}];
+  let t=0;
+  seq.forEach((s,i)=>{
+    setTimeout(()=>{document.getElementById(s.id).classList.add(s.cls);},t);t+=1000;
+    setTimeout(()=>{document.getElementById(s.id).classList.remove(s.cls,s.cls);},t);
+  });
+  setTimeout(()=>{btn.disabled=false;},t+200);
+};
+
+/* ---- SLIDE 8 COUNTERS ---- */
+let stats8done=false;
+function animateStats(){
+  if(stats8done)return;stats8done=true;
+  animateCounter('stat-0',500,100,'<',1200,'ms');
+  animateCounter('stat-1',600,200,'<',1200,'ms');
+  animateCounter('stat-2',0,0,'',400,'');
+  animateCounter('stat-3',0,100,'',1200,'%');
+}
+function animateCounter(id,from,to,prefix,dur,suffix){
+  const el=document.getElementById(id);if(!el)return;
+  const start=performance.now();
+  function frame(now){
+    const p=Math.min((now-start)/dur,1);
+    const val=Math.round(from+(to-from)*p);
+    el.textContent=(prefix?prefix:'')+val+suffix;
+    if(p<1)requestAnimationFrame(frame);
+    else el.textContent=(prefix?'<':'')+to+suffix;
+  }
+  requestAnimationFrame(frame);
+}
+let results8done=false;
+function animateResults(){
+  if(results8done)return;results8done=true;
+  document.querySelectorAll('.result-row').forEach((r,i)=>{setTimeout(()=>r.classList.add('visible'),i*200);});
+}
+
+/* ---- SLIDE 9 BARS ---- */
+let bars9done=false;
+function animateBars(){
+  if(bars9done)return;bars9done=true;
+  setTimeout(()=>{
+    const p=document.getElementById('bar-prior');const o=document.getElementById('bar-ours');
+    if(p)p.style.width='33%';
+    if(o)o.style.width='100%';
+  },100);
+}
+
+/* ---- LIGHTBOX ---- */
+const lbLabels=['Prototype Overview','ESP32 + Wiring','Servo + HC-SR04 Mount','WebSocket Dashboard','TTP223 Touch Sensor','Piezo Buzzer Output','Breadboard Full View','Detection Test Result'];
+let lbCurrent=0;
+window.openLightbox=(i)=>{lbCurrent=i;updateLightbox();document.getElementById('lightbox').classList.add('open');};
+window.closeLightbox=()=>document.getElementById('lightbox').classList.remove('open');
+window.closeLightboxOutside=(e)=>{if(e.target.id==='lightbox')closeLightbox();};
+window.lbNav=(dir,e)=>{e.stopPropagation();lbCurrent=(lbCurrent+dir+8)%8;updateLightbox();};
+function updateLightbox(){document.getElementById('lightbox-label').textContent=lbLabels[lbCurrent]+' ('+( lbCurrent+1)+' of 8)';}
+
+/* ---- PARTICLES (SLIDE 12) ---- */
+let particleRAF=null;
+function startParticles(){
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  const canvas=document.getElementById('particle-canvas');
+  if(!canvas)return;
+  const parent=canvas.parentElement;
+  canvas.width=parent.offsetWidth;canvas.height=parent.offsetHeight;
+  const ctx=canvas.getContext('2d');
+  const particles=Array.from({length:30},()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:2+Math.random()*2,speed:0.3+Math.random()*0.5}));
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='rgba(37,99,235,0.15)';
+    particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();p.y-=p.speed;if(p.y<-5){p.y=canvas.height+5;p.x=Math.random()*canvas.width;}});
+    particleRAF=requestAnimationFrame(draw);
+  }
+  if(particleRAF)cancelAnimationFrame(particleRAF);
+  draw();
+}
+
+/* ---- OVERVIEW ---- */
+window.closeOverview=()=>document.getElementById('overview').classList.remove('open');
+
+/* ---- KEYBOARD ---- */
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'){navigate(1);}
+  else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){navigate(-1);}
+  else if(e.key==='f'||e.key==='F'){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}
+  else if(e.key==='o'||e.key==='O'){document.getElementById('overview').classList.toggle('open');}
+  else if(e.key==='Escape'){closeLightbox();closeOverview();}
+});
+
+// buildDots and goTo(1) are called by startPresentation()
+</script>
+</body>
+</html>
